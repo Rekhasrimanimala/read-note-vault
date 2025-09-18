@@ -2,39 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* E-Library Design System - Modern Academic Interface */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core library theme - deep blues and teals for knowledge/trust */
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Deep teal for main actions */
+    --primary: 195 100% 25%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 195 100% 30%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Warm academic gold */
+    --secondary: 45 100% 95%;
+    --secondary-foreground: 195 100% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Warm orange for highlights */
+    --accent: 25 95% 60%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 15% 88%;
+    --input: 210 15% 96%;
+    --ring: 195 100% 25%;
+
+    /* Library-specific colors */
+    --library-nav: 200 30% 12%;
+    --library-nav-foreground: 210 20% 95%;
+    --library-sidebar: 205 20% 96%;
+    --library-hover: 195 50% 92%;
+    
+    /* PDF viewer colors */
+    --pdf-viewer: 0 0% 100%;
+    --pdf-toolbar: 210 15% 97%;
+    --note-panel: 45 50% 98%;
+    
+    /* Status colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 100%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(195 100% 25%), hsl(200 80% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 60%), hsl(35 90% 65%));
+    --gradient-subtle: linear-gradient(180deg, hsl(210 20% 99%), hsl(210 15% 96%));
+    
+    /* Shadows */
+    --shadow-card: 0 2px 8px hsl(215 25% 15% / 0.08);
+    --shadow-elevated: 0 8px 25px hsl(215 25% 15% / 0.12);
+    --shadow-primary: 0 4px 15px hsl(195 100% 25% / 0.25);
+    
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --radius: 0.5rem;
 
@@ -56,33 +90,51 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 200 30% 8%;
+    --foreground: 210 20% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 200 25% 10%;
+    --card-foreground: 210 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 200 25% 10%;
+    --popover-foreground: 210 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 195 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 195 100% 45%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 200 20% 15%;
+    --secondary-foreground: 210 20% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 200 20% 15%;
+    --muted-foreground: 215 15% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 25 95% 65%;
+    --accent-foreground: 200 30% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 200 20% 18%;
+    --input: 200 20% 15%;
+    --ring: 195 100% 40%;
+
+    --library-nav: 200 35% 5%;
+    --library-nav-foreground: 210 20% 95%;
+    --library-sidebar: 200 20% 12%;
+    --library-hover: 195 30% 20%;
+    
+    --pdf-viewer: 200 15% 12%;
+    --pdf-toolbar: 200 20% 10%;
+    --note-panel: 35 20% 15%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(195 100% 35%), hsl(200 80% 45%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 60%), hsl(35 90% 65%));
+    --gradient-subtle: linear-gradient(180deg, hsl(200 25% 10%), hsl(200 20% 8%));
+    
+    --shadow-card: 0 2px 8px hsl(0 0% 0% / 0.3);
+    --shadow-elevated: 0 8px 25px hsl(0 0% 0% / 0.4);
+    --shadow-primary: 0 4px 15px hsl(195 100% 40% / 0.35);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +152,83 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Custom scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  /* Library-specific component styles */
+  .library-nav {
+    @apply bg-[hsl(var(--library-nav))] text-[hsl(var(--library-nav-foreground))];
+  }
+  
+  .library-sidebar {
+    @apply bg-[hsl(var(--library-sidebar))];
+  }
+  
+  .library-hover {
+    @apply hover:bg-[hsl(var(--library-hover))] transition-[var(--transition-smooth)];
+  }
+  
+  .pdf-viewer {
+    @apply bg-[hsl(var(--pdf-viewer))];
+  }
+  
+  .pdf-toolbar {
+    @apply bg-[hsl(var(--pdf-toolbar))];
+  }
+  
+  .note-panel {
+    @apply bg-[hsl(var(--note-panel))];
+  }
+  
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+  
+  .gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+  
+  .shadow-primary {
+    box-shadow: var(--shadow-primary);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
   }
 }

@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -46,6 +47,27 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        library: {
+          nav: "hsl(var(--library-nav))",
+          "nav-foreground": "hsl(var(--library-nav-foreground))",
+          sidebar: "hsl(var(--library-sidebar))",
+          hover: "hsl(var(--library-hover))",
+        },
+        pdf: {
+          viewer: "hsl(var(--pdf-viewer))",
+          toolbar: "hsl(var(--pdf-toolbar))",
+        },
+        note: {
+          panel: "hsl(var(--note-panel))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

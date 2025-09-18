@@ -69,18 +69,11 @@ const UploadButton = ({ onUploadSuccess }: UploadButtonProps) => {
     if (!selectedFile) return;
 
     setUploading(true);
-    
+    const formData = new FormData();
+    formData.append('pdf', selectedFile);
+
     try {
-      // Store file info for demo purposes
-      localStorage.setItem('demo-last-upload', JSON.stringify({
-        name: selectedFile.name,
-        size: selectedFile.size,
-        type: selectedFile.type
-      }));
-      
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await pdfAPI.upload(formData);
       toast({
         title: "Upload successful",
         description: `${selectedFile.name} has been added to your library`,

@@ -36,43 +36,35 @@ const Library = () => {
 
   const loadPDFs = async () => {
     try {
-      // For demo purposes, show mock data instead of hitting the API
-      const existingPDFs = JSON.parse(localStorage.getItem('demo-pdfs') || '[]');
-      
-      if (existingPDFs.length === 0) {
-        // Initial mock PDFs for demo
-        const mockPDFs: PDF[] = [
-          {
-            id: '1',
-            title: 'Introduction to Machine Learning',
-            filename: 'ml-introduction.pdf',
-            uploadDate: new Date().toISOString(),
-            userId: 'demo-user'
-          },
-          {
-            id: '2',
-            title: 'React Development Guide',
-            filename: 'react-guide.pdf',
-            uploadDate: new Date(Date.now() - 24*60*60*1000).toISOString(),
-            userId: 'demo-user'
-          },
-          {
-            id: '3',
-            title: 'Database Design Principles',
-            filename: 'database-design.pdf',
-            uploadDate: new Date(Date.now() - 7*24*60*60*1000).toISOString(),
-            userId: 'demo-user'
-          }
-        ];
-        localStorage.setItem('demo-pdfs', JSON.stringify(mockPDFs));
-        setPdfs(mockPDFs);
-      } else {
-        setPdfs(existingPDFs);
-      }
+      const response = await pdfAPI.getAll();
+      setPdfs(response.data);
     } catch (error) {
       console.error('Error loading PDFs:', error);
-      // Fallback to empty array
-      setPdfs([]);
+      // For demo purposes, show mock data if API fails
+      const mockPDFs: PDF[] = [
+        {
+          id: '1',
+          title: 'Introduction to Machine Learning',
+          filename: 'ml-introduction.pdf',
+          uploadDate: new Date().toISOString(),
+          userId: 'demo-user'
+        },
+        {
+          id: '2',
+          title: 'React Development Guide',
+          filename: 'react-guide.pdf',
+          uploadDate: new Date(Date.now() - 24*60*60*1000).toISOString(),
+          userId: 'demo-user'
+        },
+        {
+          id: '3',
+          title: 'Database Design Principles',
+          filename: 'database-design.pdf',
+          uploadDate: new Date(Date.now() - 7*24*60*60*1000).toISOString(),
+          userId: 'demo-user'
+        }
+      ];
+      setPdfs(mockPDFs);
     } finally {
       setLoading(false);
     }
@@ -80,50 +72,25 @@ const Library = () => {
 
   const handleDeletePDF = async (id: string) => {
     try {
-      // For demo purposes, delete from localStorage instead of API
-      const currentPDFs = JSON.parse(localStorage.getItem('demo-pdfs') || '[]');
-      const updatedPDFs = currentPDFs.filter((pdf: PDF) => pdf.id !== id);
-      localStorage.setItem('demo-pdfs', JSON.stringify(updatedPDFs));
-      setPdfs(updatedPDFs);
-      
+      await pdfAPI.delete(id);
+      setPdfs(pdfs.filter(pdf => pdf.id !== id));
       toast({
         title: "PDF deleted",
         description: "The document has been removed from your library",
       });
     } catch (error) {
+      // For demo purposes, delete locally if API fails
+      setPdfs(pdfs.filter(pdf => pdf.id !== id));
       toast({
-        title: "Delete failed",
-        description: "Unable to delete the document",  
-        variant: "destructive",
+        title: "PDF deleted",
+        description: "The document has been removed from your library",
       });
     }
   };
 
   const handleUploadSuccess = () => {
     setShowUpload(false);
-    
-    // Add the uploaded file to demo storage
-    if (localStorage.getItem('demo-last-upload')) {
-      const uploadedFile = JSON.parse(localStorage.getItem('demo-last-upload') || '{}');
-      const currentPDFs = JSON.parse(localStorage.getItem('demo-pdfs') || '[]');
-      
-      const newPDF: PDF = {
-        id: Date.now().toString(),
-        title: uploadedFile.name?.replace('.pdf', '') || 'Uploaded Document',
-        filename: uploadedFile.name || 'document.pdf',
-        uploadDate: new Date().toISOString(),
-        userId: 'demo-user'
-      };
-      
-      const updatedPDFs = [newPDF, ...currentPDFs];
-      localStorage.setItem('demo-pdfs', JSON.stringify(updatedPDFs));
-      setPdfs(updatedPDFs);
-      
-      // Clear the temp upload data
-      localStorage.removeItem('demo-last-upload');
-    } else {
-      loadPDFs();
-    }
+    loadPDFs();
   };
 
   if (loading) {

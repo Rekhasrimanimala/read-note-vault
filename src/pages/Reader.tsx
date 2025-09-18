@@ -27,15 +27,30 @@ const Reader = () => {
     if (!id) return;
 
     try {
-      const response = await pdfAPI.getById(id);
-      setPdf(response.data);
+      // For demo purposes, get PDF info from localStorage instead of API
+      const pdfs = JSON.parse(localStorage.getItem('demo-pdfs') || '[]');
+      const foundPDF = pdfs.find((pdf: PDF) => pdf.id === id);
+      
+      if (foundPDF) {
+        setPdf(foundPDF);
+      } else {
+        // Fallback to mock data if not found
+        const mockPDF: PDF = {
+          id: id,
+          title: 'Sample Academic Paper',
+          filename: 'sample-paper.pdf',
+          uploadDate: new Date().toISOString(),
+          userId: 'demo-user'
+        };
+        setPdf(mockPDF);
+      }
     } catch (error) {
       console.error('Error loading PDF:', error);
-      // For demo purposes, show mock data if API fails
+      // Fallback to mock data
       const mockPDF: PDF = {
         id: id,
-        title: 'Sample Document',
-        filename: 'sample.pdf',
+        title: 'Sample Academic Paper',
+        filename: 'sample-paper.pdf', 
         uploadDate: new Date().toISOString(),
         userId: 'demo-user'
       };
@@ -126,7 +141,7 @@ const Reader = () => {
         {/* PDF Viewer */}
         <div className={`flex-1 ${showNotes ? 'border-r' : ''}`}>
           <PDFViewer
-            pdfUrl={`/api/pdf/${pdf.id}/file`} // This would be the actual PDF file URL
+            pdfUrl="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" // Sample PDF for demo
             title={pdf.title}
           />
         </div>

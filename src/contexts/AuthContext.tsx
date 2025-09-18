@@ -41,10 +41,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await authAPI.login({ email, password });
-      const { token, user } = response.data;
-      setToken(token);
-      setUser(user);
+      // For demo purposes, accept any email/password combination
+      const mockAuthResponse = {
+        token: 'demo-jwt-token-' + Date.now(),
+        user: {
+          id: 'demo-user-1',
+          username: email.split('@')[0] || 'Demo User',
+          email: email
+        }
+      };
+      
+      setToken(mockAuthResponse.token);
+      setUser(mockAuthResponse.user);
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -53,10 +64,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (username: string, email: string, password: string) => {
     try {
-      const response = await authAPI.register({ username, email, password });
-      const { token, user } = response.data;
-      setToken(token);
-      setUser(user);
+      // For demo purposes, accept any registration
+      const mockAuthResponse = {
+        token: 'demo-jwt-token-' + Date.now(),
+        user: {
+          id: 'demo-user-' + Date.now(),
+          username: username,
+          email: email
+        }
+      };
+      
+      setToken(mockAuthResponse.token);
+      setUser(mockAuthResponse.user);
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
       console.error('Register error:', error);
       throw error;

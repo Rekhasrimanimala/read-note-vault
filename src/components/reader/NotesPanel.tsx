@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit2, Trash2, Save, X, StickyNote } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Note, notesAPI } from '@/lib/api';
+import { Note } from '@/lib/api';
 
 interface NotesPanelProps {
   pdfId: string;
@@ -22,36 +22,27 @@ const NotesPanel = ({ pdfId }: NotesPanelProps) => {
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
+  // Local storage key and helpers
+  const storageKey = `demo-notes:${pdfId}`;
+  const saveNotesToStorage = (items: Note[]) => {
+    localStorage.setItem(storageKey, JSON.stringify(items));
+  };
+
   // Load notes on component mount
   useEffect(() => {
     loadNotes();
   }, [pdfId]);
 
-  const loadNotes = async () => {
+  const loadNotes = () => {
     try {
-      const response = await notesAPI.getByPdfId(pdfId);
-      setNotes(response.data);
-    } catch (error) {
-      console.error('Error loading notes:', error);
-      // For demo purposes, show mock data if API fails
-      setNotes([
-        {
-          id: '1',
-          content: 'This is an interesting point about the methodology used in chapter 3.',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          pdfId,
-          userId: 'demo-user'
-        },
-        {
-          id: '2', 
-          content: 'Key takeaway: The research shows significant correlation between variables X and Y.',
-          createdAt: new Date(Date.now() - 24*60*60*1000).toISOString(),
-          updatedAt: new Date(Date.now() - 24*60*60*1000).toISOString(),
-          pdfId,
-          userId: 'demo-user'
-        }
-      ]);
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        setNotes(JSON.parse(raw));
+      } else {
+        setNotes([]);
+      }
+    } catch (e) {
+      setNotes([]);
     } finally {
       setLoading(false);
     }
@@ -62,29 +53,19 @@ const NotesPanel = ({ pdfId }: NotesPanelProps) => {
 
     setSaving(true);
     try {
-      const response = await notesAPI.create(pdfId, newNote);
-      setNotes([response.data, ...notes]);
-      setNewNote('');
-      toast({
-        title: "Note added",
-        description: "Your note has been saved successfully",
-      });
-    } catch (error) {
-      // For demo purposes, add note locally if API fails
       const mockNote: Note = {
         id: Date.now().toString(),
-        content: newNote,
+        content: newNote.trim(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         pdfId,
         userId: 'demo-user'
       };
-      setNotes([mockNote, ...notes]);
+      const updated = [mockNote, ...notes];
+      setNotes(updated);
+      saveNotesToStorage(updated);
       setNewNote('');
-      toast({
-        title: "Note added",
-        description: "Your note has been saved successfully",
-      });
+      toast({ title: 'Note added', description: 'Your note has been saved locally' });
     } finally {
       setSaving(false);
     }
@@ -95,52 +76,24 @@ const NotesPanel = ({ pdfId }: NotesPanelProps) => {
 
     setSaving(true);
     try {
-      await notesAPI.update(noteId, editContent);
-      setNotes(notes.map(note => 
-        note.id === noteId 
-          ? { ...note, content: editContent, updatedAt: new Date().toISOString() }
-          : note
-      ));
+      const updated = notes.map(n =>
+        n.id === noteId ? { ...n, content: editContent.trim(), updatedAt: new Date().toISOString() } : n
+      );
+      setNotes(updated);
+      saveNotesToStorage(updated);
       setEditingNote(null);
       setEditContent('');
-      toast({
-        title: "Note updated",
-        description: "Your changes have been saved",
-      });
-    } catch (error) {
-      // For demo purposes, update locally if API fails
-      setNotes(notes.map(note => 
-        note.id === noteId 
-          ? { ...note, content: editContent, updatedAt: new Date().toISOString() }
-          : note
-      ));
-      setEditingNote(null);
-      setEditContent('');
-      toast({
-        title: "Note updated",
-        description: "Your changes have been saved",
-      });
+      toast({ title: 'Note updated', description: 'Your changes have been saved locally' });
     } finally {
       setSaving(false);
     }
   };
 
   const handleDeleteNote = async (noteId: string) => {
-    try {
-      await notesAPI.delete(noteId);
-      setNotes(notes.filter(note => note.id !== noteId));
-      toast({
-        title: "Note deleted",
-        description: "The note has been removed",
-      });
-    } catch (error) {
-      // For demo purposes, delete locally if API fails
-      setNotes(notes.filter(note => note.id !== noteId));
-      toast({
-        title: "Note deleted",
-        description: "The note has been removed",
-      });
-    }
+    const updated = notes.filter(n => n.id !== noteId);
+    setNotes(updated);
+    saveNotesToStorage(updated);
+    toast({ title: 'Note deleted', description: 'The note has been removed' });
   };
 
   const startEdit = (note: Note) => {

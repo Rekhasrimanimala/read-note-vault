@@ -26,10 +26,10 @@ const UploadButton = ({ onUploadSuccess }: UploadButtonProps) => {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+    if (file.size > 20 * 1024 * 1024) { // 20MB limit
       toast({
         title: "File too large",
-        description: "Please select a file smaller than 10MB",
+        description: "Please select a file smaller than 20MB",
         variant: "destructive",
       });
       return;
@@ -155,7 +155,7 @@ const UploadButton = ({ onUploadSuccess }: UploadButtonProps) => {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".pdf"
+        accept=".pdf,application/pdf"
         onChange={handleFileInputChange}
         className="hidden"
       />
@@ -188,8 +188,8 @@ const UploadButton = ({ onUploadSuccess }: UploadButtonProps) => {
             Choose File
           </Button>
           
-          <p className="text-xs text-muted-foreground mt-4">
-            Supports PDF files up to 10MB
+        <p className="text-xs text-muted-foreground mt-4">
+            Supports PDF files up to 20MB
           </p>
         </CardContent>
       </Card>

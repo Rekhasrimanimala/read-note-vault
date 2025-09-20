@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Button } from '@/components/ui/enhanced-button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,7 +7,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 // Set up PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PDFViewerProps {
   pdfUrl: string;
@@ -19,11 +19,10 @@ const PDFViewer = ({ pdfUrl, title }: PDFViewerProps) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [rotation, setRotation] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
+  
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
-    setLoading(false);
   };
 
   const goToPrevPage = () => {
@@ -46,16 +45,6 @@ const PDFViewer = ({ pdfUrl, title }: PDFViewerProps) => {
     setRotation(rotation => (rotation + 90) % 360);
   };
 
-  if (loading) {
-    return (
-      <div className="pdf-viewer h-full flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading PDF...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="pdf-viewer h-full flex flex-col">

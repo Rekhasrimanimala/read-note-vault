@@ -197,7 +197,7 @@ const NotesPanel = ({ pdfId }: NotesPanelProps) => {
             rows={3}
           />
           <Button
-            variant="library"
+            variant="default"
             size="sm"
             onClick={handleAddNote}
             disabled={!newNote.trim() || saving}
@@ -235,7 +235,7 @@ const NotesPanel = ({ pdfId }: NotesPanelProps) => {
                       />
                       <div className="flex space-x-2">
                         <Button
-                          variant="library"
+                          variant="default"
                           size="sm"
                           onClick={() => handleEditNote(note.id)}
                           disabled={!editContent.trim() || saving}
